@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Login from './Routes/Login';
 import Dashboard from './Routes/Dashboard';
+import Admin from './Routes/Admin';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -13,6 +14,7 @@ root.render(
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/admin" element={<Admin />} />
     </Routes>
   </BrowserRouter>
 

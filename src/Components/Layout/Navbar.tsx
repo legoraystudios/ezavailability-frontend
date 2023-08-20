@@ -1,25 +1,24 @@
 import React from 'react'
-import { MDBContainer, MDBNavbar, MDBNavbarBrand } from 'mdb-react-ui-kit';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import Logo from '../../Images/logo2.png'
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import "@fortawesome/fontawesome-free/css/all.min.css";
 
 
 function Navbar() {
   return (
     <div>
-        
-        <MDBNavbar className="nav">
-            <MDBContainer className="d-flex justify-content-center">
-                <MDBNavbarBrand href='#' className="text-white">
-                    <img src={Logo} height='60' alt='' loading='lazy'
-                    /> EZAvailability
-                </MDBNavbarBrand>
-            </MDBContainer>
-        </MDBNavbar>
+
+        <nav className="nav py-1">
+          <div className="container-fluid d-flex justify-content-center">
+            <a className="navbar-brand text-white fs-5" href="#">
+              <img src={Logo} height='80' alt='' loading='lazy'
+              /> EZAvailability
+            </a>
+          </div>
+        </nav>
 
     </div>
-
 
   )
 }

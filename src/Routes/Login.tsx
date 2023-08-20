@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { MDBInput, MDBRow, MDBCol, MDBBtn, MDBContainer } from 'mdb-react-ui-kit';
+import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Navbar from '../Components/Layout/Navbar'
 import Footer from '../Components/Layout/Footer'
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import Alerts from '../Components/Layout/Alerts'
 import '../Styles/main.css'
 
 function Login() {
@@ -36,7 +36,7 @@ function Login() {
       if (response.status === 200) {
         navigate('/dashboard');
       } else {
-        alert("Error")
+        navigate('?invalidcredentials');
       }
     } catch (err) {
       console.log(err)
@@ -49,23 +49,23 @@ function Login() {
         <body>
             <Navbar />
 
-            <MDBContainer className="w-25 mx-auto mt-5">
-                <h3 className="text-center mb-5">Sign in with your credentials</h3>
-                <form onSubmit={handleSubmit}>
-                    <MDBInput className='mb-4' value={email} onChange={(e) => setEmail(e.target.value)} type='email' id='form1Example1' label='Email address' />
-                    <MDBInput className='mb-4' value={password} onChange={(e) => setPassword(e.target.value)} type='password' id='form1Example2' label='Password' />
-
-                    <MDBRow className='mb-4'>
-                        <MDBCol className="text-center">
-                            <a href='#!'>Forgot password?</a>
-                        </MDBCol>
-                    </MDBRow>
-
-                    <MDBBtn type='submit' block>
-                     Sign in
-                    </MDBBtn>
-                </form>
-            </MDBContainer>
+            <form className="w-25 mx-auto mt-5" onSubmit={handleSubmit}>
+            <Alerts />
+            <h4 className="text-center">Sign In with your Credentials</h4>
+              <div className="mb-3">
+                <label className="form-label">Email address</label>
+                <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+              </div>
+              <div className="mb-3 form-check">
+                <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                <label className="form-check-label" htmlFor="exampleCheck1">Remember Me</label>
+              </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
 
             <Footer />
             

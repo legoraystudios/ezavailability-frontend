@@ -1,16 +1,19 @@
 import React from 'react'
-import { MDBFooter, MDBIcon } from 'mdb-react-ui-kit';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+var pjson = require('../../../package.json');
 
 
 function Footer() {
   return (
     <div>
-        <footer>
-            <MDBFooter bgColor='light' className='text-center text-lg-left'>
-                <p className="text-center">Made with <MDBIcon className="text-danger" fas icon="heart" /> by <a className="text-info text-decoration-none" href="https://legoray.com" target="_blank" rel="noreferrer">Legoncio</a> - Powered by EZAvailability</p>
-            </MDBFooter>
+        <footer className="sticky-bottom mt-5">
+          <div className="footer">
+              <div className='text-center bg-transparent'>
+                  <p className="text-center text-body">Made with <i className="bi bi-balloon-heart text-danger"></i> by <a className="text-info text-decoration-none" href="https://legoray.com" target="_blank" rel="noreferrer">Legoncio</a> - Powered by EZAvailability | Version: {pjson.version}</p>
+              </div>
+          </div>
         </footer>
 
     </div>
