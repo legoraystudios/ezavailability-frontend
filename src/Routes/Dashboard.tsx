@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { MDBContainer } from 'mdb-react-ui-kit';
 import Navbar2 from '../Components/Layout/Navbar2'
 import Footer from '../Components/Layout/Footer'
 import Alerts from '../Components/Layout/Alerts'
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import '../Styles/main.css'
+
 
   interface UserProperties {
     id: number
@@ -22,8 +22,9 @@ function Dashboard() {
   try {
 
     const fetchData = () => {
-      fetch("http://localhost:3000/user/", {
-        method: "GET",
+
+      fetch(`${process.env.REACT_APP_BACKEND_HOST}/auth/token/` , {
+        method: "POST",
         credentials: 'include',
         headers: {
         'Content-Type': 'application/json'
@@ -31,10 +32,10 @@ function Dashboard() {
       })
 
         .then(userResponse => {
-          if (userResponse.status == 200) {
+          if (userResponse.status === 200) {
             return userResponse.json()
           } else {
-            navigate("/")
+            navigate("/?timeout")
           }
           
         })
@@ -46,7 +47,8 @@ function Dashboard() {
 
     useEffect(() => {
       document.title = "Dashboard | EZAvailability";
-      fetchData()
+      fetchData();
+      // eslint-disable-next-line
     }, []);
     
   } catch (err) {
@@ -75,19 +77,19 @@ function Dashboard() {
 
             <div className="container d-flex justify-content-center">
               <div className="card bg-cards flex-grow-1 text-center" style={{width: "18rem"}}>
-                  <a href="" className="card-body border border-secondary-subtle">
+                  <a href="/#" className="card-body border border-secondary-subtle">
                     <h3><i className="bi bi-upc-scan"></i> Scan In</h3>
                     <p className="card-text">Add existing items to inventory.</p>
                   </a>
-                  <a href="" className="card-body border border-secondary-subtle">
+                  <a href="/#" className="card-body border border-secondary-subtle">
                     <h3><i className="bi bi-upc-scan"></i> Scan Out</h3>
                     <p className="card-text">Remove existing items to inventory.</p>
                   </a>
-                  <a href="" className="card-body border border-secondary-subtle">
+                  <a href="/#" className="card-body border border-secondary-subtle">
                     <h3><i className="bi bi-search"></i> Manage Inventory</h3>
                     <p className="card-text">Lookup item/Add new item to inventory.</p>
                   </a>
-                  <a href="" className="card-body border border-secondary-subtle">
+                  <a href="/#" className="card-body border border-secondary-subtle">
                     <h3><i className="bi bi-cart"></i> Virtual Shooping List</h3>
                     <p className="card-text">Lookup item/Add new item to inventory.</p>
                   </a>

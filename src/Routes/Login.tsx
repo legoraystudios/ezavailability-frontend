@@ -24,7 +24,7 @@ function Login() {
     const payload = {email: email, password: password}
 
     try {
-      let response = await fetch("http://localhost:3000/auth/login", {
+      let response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/auth/login`, {
         method: "POST",
         credentials: 'include',
         headers: {

@@ -9,6 +9,7 @@ interface UserProperties {
   id: number
   first_name: string
   email: string
+  role_id: number
 }
 
 function Navbar2() {
@@ -21,7 +22,7 @@ function Navbar2() {
     event.preventDefault()
 
     try {
-      let signOutResponse = await fetch("http://localhost:3000/auth/logout", {
+      let signOutResponse = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/auth/logout`, {
         method: "POST",
         credentials: 'include',
         headers: {
@@ -39,10 +40,26 @@ function Navbar2() {
 
   }
 
+  const adminBtn = () => {
+
+    const getRole = user && user.map( record => {
+      return record.role_id
+    })
+
+    const role:number = Number(getRole)
+
+    if (role > 0) {
+      return(
+        <li><a className="dropdown-item text-danger" href="/dashboard/admin"><i className="bi bi-shield-lock"></i> Admin Dashboard</a></li>
+      )
+    }
+
+  }
+
     const fetchData = () => {
       try {
-        fetch("http://localhost:3000/user/", {
-         method: "GET",
+        fetch(`${process.env.REACT_APP_BACKEND_HOST}/auth/token/`, {
+         method: "POST",
           credentials: 'include',
           headers: {
           'Content-Type': 'application/json'
@@ -50,7 +67,7 @@ function Navbar2() {
         })
 
         .then(response => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             return response.json()
           } else {
             navigate("/")
@@ -68,8 +85,8 @@ function Navbar2() {
     }
 
     useEffect(() => {
-      document.title = "Dashboard | EZAvailability";
       fetchData()
+      // eslint-disable-next-line
     }, []);
 
 
@@ -77,25 +94,27 @@ function Navbar2() {
     <div>
         <nav className="navbar nav">
           <div className="container">
-            <a className="navbar-brand text-white fs-5 d-flex justify-content-start" href="#">
+            <a className="navbar-brand text-white fs-5 d-flex justify-content-start" href="/#">
               <img src={Logo} height='80' alt='' loading='lazy'
               /> EZAvailability
             </a>
             <li className="nav-item list-inline dropdown d-flex justify-content-end">
-              <a className="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a className="nav-link dropdown-toggle text-white" href="/#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i className="bi bi-person-fill"></i> Signed in,                   
                   {
                     user && user.map( record => {
                       return(
-                        <a> {record.first_name}</a>
+                        <a href="#/" className="text-white"> {record.first_name}</a>
                       )
                     })
                   }
               </a>
               <ul className="dropdown-menu">
-                <li><a className="dropdown-item text-danger" href="/dashboard/admin"><i className="bi bi-shield-lock"></i> Admin Dashboard</a></li>
-                <li><a className="dropdown-item" href="#"><i className="bi bi-gear"></i> Account Settings</a></li>
-                <li><a onClick={signOut} className="dropdown-item" href="#"><i className="bi bi-box-arrow-left"></i> Sign Out</a></li>
+                {
+                  adminBtn()
+                }
+                <li><a className="dropdown-item" href="/#"><i className="bi bi-gear"></i> Account Settings</a></li>
+                <li><a onClick={signOut} className="dropdown-item" href="/#"><i className="bi bi-box-arrow-left"></i> Sign Out</a></li>
               </ul>
             </li>
           </div>

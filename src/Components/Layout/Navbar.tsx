@@ -11,7 +11,7 @@ function Navbar() {
 
         <nav className="nav py-1">
           <div className="container-fluid d-flex justify-content-center">
-            <a className="navbar-brand text-white fs-5" href="#">
+            <a className="navbar-brand text-white fs-5" href="/#">
               <img src={Logo} height='80' alt='' loading='lazy'
               /> EZAvailability
             </a>
