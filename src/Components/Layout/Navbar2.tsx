@@ -92,6 +92,7 @@ function Navbar2() {
 
   return (
     <div>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <nav className="navbar nav">
           <div className="container">
             <a className="navbar-brand text-white fs-5 d-flex justify-content-start" href="/#">

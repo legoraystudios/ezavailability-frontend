@@ -54,17 +54,17 @@ function Login() {
             <h4 className="text-center">Sign In with your Credentials</h4>
               <div className="mb-3">
                 <label className="form-label">Email address</label>
-                <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type="email" className="form-control" placeholder="someone@domain.com" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input type="password" className="form-control" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               <div className="mb-3 form-check">
                 <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                 <label className="form-check-label" htmlFor="exampleCheck1">Remember Me</label>
               </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">Login</button>
             </form>
 
             <Footer />
