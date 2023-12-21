@@ -84,10 +84,19 @@ function Alerts() {
         return(
             <div>
                 <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    <p>Please check the following: <br />
+                    <p>System | Please check the following: <br />
                        &nbsp;&bull; Password must have 8-16 characters.<br />
                        &nbsp;&bull; Password must contain at least a number.<br />
                        &nbsp;&bull; Password must be contain an uppercase letter.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("editaccounterr")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                        <p>System | Something went wrong while editing the account. Please check your information and try again.</p>
                     <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>

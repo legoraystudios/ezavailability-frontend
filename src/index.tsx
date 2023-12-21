@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom/client';
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Login from './Routes/Login';
 import Dashboard from './Routes/Dashboard';
-import Admin from './Routes/Admin';
+import Admin from './Routes/Admin/Admin';
+import AdminAccounts from './Routes/Admin/Accounts';
+import AdminScans from './Routes/Admin/Scans';
+import Products from './Routes/Products/Products';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -15,6 +18,9 @@ root.render(
       <Route path="/" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/admin" element={<Admin />} />
+      <Route path="/dashboard/admin/accounts" element={<AdminAccounts />} />
+      <Route path="/dashboard/admin/scans" element={<AdminScans />} />
+      <Route path="/dashboard/products" element={<Products />} />
     </Routes>
   </BrowserRouter>
 
