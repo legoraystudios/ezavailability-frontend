@@ -128,7 +128,13 @@ const Accounts = () => {
         })
         .then(async data => {
             setAccounts(data);
-            setTotalItems(await data[0].total_rows)
+
+            if(data.length > 0) {
+              setTotalItems(await data[0].total_rows)
+            } else {
+              setTotalItems(0)
+            }
+            
             setIsLoaded(true);
         })
 
@@ -525,52 +531,52 @@ const Accounts = () => {
 
 
             { /* Create Account Modal */ }
-          <div className="modal fade" id="createAccount" tabIndex={-1} aria-labelledby="createAccount" aria-hidden="true">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h1 className="modal-title fs-5" id="exampleModalLabel">Create Account</h1>
-                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div className="modal-body">
-                <form className="row g-3" onSubmit={createAccount}>
-                  <div className="col-6">
-                    <label className="form-label">First Name</label>
-                    <input type="text" className="form-control" id="firstName" placeholder="John" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+            <div className="modal fade" id="createAccount" tabIndex={-1} aria-labelledby="createAccount" aria-hidden="true">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h1 className="modal-title fs-5" id="exampleModalLabel">Create Account</h1>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div className="col-6">
-                    <label className="form-label">Last Name</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="Doe" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                  <div className="modal-body">
+                  <form className="row g-3" onSubmit={createAccount}>
+                    <div className="col-6">
+                      <label className="form-label">First Name</label>
+                      <input type="text" className="form-control" id="firstName" placeholder="John" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    </div>
+                    <div className="col-6">
+                      <label className="form-label">Last Name</label>
+                      <input type="text" className="form-control" id="lastName" placeholder="Doe" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    </div>
+                    <div className="col-md-12">
+                      <label htmlFor="inputEmail4" className="form-label">Email</label>
+                      <input type="email" className="form-control" id="email" placeholder="someone@domain.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    </div>
+                    <div className="col-6">
+                      <label className="form-label">Password</label>
+                      <input type="password" className="form-control" id="firstName" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </div>
+                    <div className="col-6">
+                      <label className="form-label">Confirm Password</label>
+                      <input type="password" className="form-control" id="lastName" placeholder="********" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                    </div>
+                    <div className="col-md-12">
+                      <label htmlFor="inputState" className="form-label">Role</label>
+                      <select id="inputState" className="form-select" value={role} onChange={(e: any) => setRole(e.target.value)}>
+                        <option>Choose Role...</option>
+                        <option value="0">0 | Simple User</option>
+                        <option value="1">1 | Administrator</option>
+                      </select>
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" className="btn btn-success" data-bs-dismiss="modal">Create Account</button>
+                    </div>
+                  </form>
                   </div>
-                  <div className="col-md-12">
-                    <label htmlFor="inputEmail4" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="email" placeholder="someone@domain.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-                  </div>
-                  <div className="col-6">
-                    <label className="form-label">Password</label>
-                    <input type="password" className="form-control" id="firstName" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} />
-                  </div>
-                  <div className="col-6">
-                    <label className="form-label">Confirm Password</label>
-                    <input type="password" className="form-control" id="lastName" placeholder="********" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                  </div>
-                  <div className="col-md-12">
-                    <label htmlFor="inputState" className="form-label">Role</label>
-                    <select id="inputState" className="form-select" value={role} onChange={(e: any) => setRole(e.target.value)}>
-                      <option>Choose Role...</option>
-                      <option value="0">0 | Simple User</option>
-                      <option value="1">1 | Administrator</option>
-                    </select>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-success" data-bs-dismiss="modal">Create Account</button>
-                  </div>
-                </form>
                 </div>
               </div>
             </div>
-          </div>
             
             </body>
             <Footer />
