@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Alerts from "../../Components/Layout/Alerts";
 import Navbar2 from "../../Components/Layout/Navbar2";
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../Components/Layout/Footer';
 
 interface UserProperties {
     id: number
@@ -235,10 +236,9 @@ const Scans = () => {
                             </li>
                         </ul>
                     </nav>
-
-
                 </div>
             </body>
+            <Footer />
         </div>
     )
 }

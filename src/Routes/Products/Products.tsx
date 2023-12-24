@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Select from "react-select";
-import Image from "../../Images/image.svg";
+import Image from "../../Images/image.jpg";
 import Alerts from "../../Components/Layout/Alerts";
 import Navbar2 from "../../Components/Layout/Navbar2";
 import Footer from "../../Components/Layout/Footer";
+import Overlay from "react-bootstrap/esm/Overlay";
+import Tooltip from "react-bootstrap/esm/Tooltip";
 
 interface UserProperties {
     id: number,
@@ -16,6 +18,11 @@ interface CategoryProperties {
     category_name: string,
     category_desc: string,
     low_stock_alert: number
+}
+
+interface CategoryOptions {
+    value: string;
+    label: string;
 }
 
 interface ProductProperties {
@@ -43,9 +50,22 @@ const Products = () => {
     const [limitPerPage, setLimitPerPage] = useState(5);
     const [totalItems, setTotalItems] = useState(0);
 
+    // Variables for createProduct()
+    const [productId, setProductId] = useState(0);
+    const [productName, setProductName] = useState("");
+    const [productDesc, setProductDesc] = useState("");
+    const [productQty, setProductQty] = useState("");
+    const [productUpc, setProductUpc] = useState("");
+    const [lowStockAlert, setLowStockAlert] = useState("");
+    const [productCategory, setProductCategory] = useState("");
+
     // Categories
     const [categoryOptions, setCategoryOptions] = useState([]);
     const [categories, setCategories] = useState<CategoryProperties[]>([]);
+
+    // Low Stock Alert tooltip
+    const [show, setShow] = useState(false);
+    const lowStockAlertTooltip = useRef(null);
 
     // Pagination variables
     const totalPages = Math.ceil(totalItems / limitPerPage);
@@ -61,6 +81,7 @@ const Products = () => {
 
     const [searchUrlParams, setSearchUrlParams] = useSearchParams();
     const navigate = useNavigate();
+
 
     const fetchData = () => {
 
@@ -175,6 +196,129 @@ const Products = () => {
           
     }
 
+    const addProduct = async (event: any) => {
+
+        event.preventDefault();
+
+        try {
+        
+            const payload = {productName: productName, productDesc: productDesc, productQty: productQty, productUpc: productUpc,
+                    lowStockAlert: lowStockAlert, categoryId: productCategory}
+        
+                await fetch(`${process.env.REACT_APP_BACKEND_HOST}/products/create`, {
+                  method:  "POST",
+                  credentials: "include",
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(payload)
+                })
+
+                .then(async response => {
+                    const res = await response.json() as {
+                      errors: {
+                        errCode: string,
+                      }
+                    };
+                    
+                    if (response.status === 200) {
+                      navigate("/dashboard/products?productadded")
+                      getProducts();
+                    } else if (res.errors.errCode === "Prod01") {
+                      navigate("/dashboard/products?addproducterr01")
+                    } else if (res.errors.errCode === "Prod02") {
+                      navigate("/dashboard/products?addproducterr02")
+                    } else if (res.errors.errCode === "Prod03") {
+                      navigate("/dashboard/products?addproducterr03")
+                    } else {
+                      navigate("/dashboard/products?addproducterror")
+                    }
+                  })
+
+          } catch (err) {
+            console.log(err);
+          }
+          
+    }
+
+    const editProduct = async (event: any) => {
+
+        event.preventDefault();
+
+        try {
+        
+            const payload = {productId: productId, productName: productName, productDesc: productDesc, productQty: productQty, productUpc: productUpc,
+                    lowStockAlert: lowStockAlert, categoryId: productCategory}
+        
+                await fetch(`${process.env.REACT_APP_BACKEND_HOST}/products/edit`, {
+                  method:  "PUT",
+                  credentials: "include",
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(payload)
+                })
+
+                .then(async response => {
+                    const res = await response.json() as {
+                      errors: {
+                        errCode: string,
+                      }
+                    };
+                    
+                    if (response.status === 200) {
+                      navigate("/dashboard/products?productedited")
+                      getProducts();
+                    } else if (res.errors.errCode === "Prod01") {
+                      navigate("/dashboard/products?addproducterr01")
+                    } else if (res.errors.errCode === "Prod02") {
+                      navigate("/dashboard/products?addproducterr02")
+                    } else if (res.errors.errCode === "Prod03") {
+                      navigate("/dashboard/products?addproducterr03")
+                    } else {
+                      navigate("/dashboard/products?editproducterror")
+                    }
+                  })
+
+          } catch (err) {
+            console.log(err);
+          }
+          
+    }
+
+    const deleteProduct = async (productId: number) => {
+
+        try {
+
+            const payload = {productId: productId}
+
+            await fetch(`${process.env.REACT_APP_BACKEND_HOST}/products/delete`, {
+                method:  "DELETE",
+                credentials: "include",
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+              })
+
+              .then(async response => {
+
+                const res = await response.json()
+                
+                if (response.status === 200) {
+                  navigate("/dashboard/products?productdeleted")
+                  getProducts();
+                } else {
+                  navigate("/dashboard/products?error")
+                }
+              })
+
+        } catch (err) {
+            console.log(err);
+        }
+
+    }
+
     const renderPageNumbers = () => {
 
         try {
@@ -223,12 +367,16 @@ const Products = () => {
       }
 
     useEffect(() => {
-        document.title = "Dashboard | EZAvailability";
-        getCategories();
+        document.title = "My Inventory | EZAvailability";
         fetchData();
+        getCategories();
         getProducts();
         // eslint-disable-next-line
     }, [page, limitPerPage])
+
+    const productCatDropdownChange = (selectedOption: any) => {
+        setProductCategory(selectedOption.value)
+    }
 
     return (
         <div>
@@ -250,13 +398,13 @@ const Products = () => {
 
 
                     <form className="d-inline-flex float-start" role="search" onSubmit={searchQuery}>
-                      <select id="inputState" className="form-select w-25" value={searchType} onChange={(e: any) => setSearchType(e.target.value)}>
+                      <select id="inputState" className="form-select w-50" value={searchType} onChange={(e: any) => setSearchType(e.target.value)}>
                           <option value="0">Search By...</option>
                           <option value="productName" >Product Name</option>
                           <option value="productId">Product ID</option>
                           <option value="productUpc">Product UPC</option>
                       </select>
-                      <input className="form-control me-2 w-50" type="search" placeholder="Search" aria-label="Search" value={searchValue} onChange={(e:any) => setSearchValue(e.target.value)}/>
+                      <input className="form-control me-2 w-75" type="search" placeholder="Search" aria-label="Search" value={searchValue} onChange={(e:any) => setSearchValue(e.target.value)}/>
                       <button className="btn btn-primary" type="submit">Search</button>
                     </form>
 
@@ -274,28 +422,46 @@ const Products = () => {
                                         <>
                                             <div className="accordion-item" key={record.product_id}>
                                               <h2 className="accordion-header">
-                                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#product-${record.product_id}`} aria-expanded="true" aria-controls="collapseOne">
+                                                <img className="me-2" src={Image} height={45}></img>
                                                     {record.product_name} <span className="badge text-bg-primary ms-2">{record.category_name}</span> 
-                                                    <span className={`${record.product_qty > record.low_stock_alert ? "text-bg-success" : "text-bg-danger"} ${"badge"} ${"ms-2"}`}>On Hand: {record.product_qty}</span>
+                                                    <span className={`${record.product_qty > record.low_stock_alert ? "text-bg-success" : "text-bg-danger"} ${"badge text-white ms-2"}`}>On Hand: {record.product_qty}</span>
                                                 </button>
                                               </h2>
-                                              <div id="collapseOne" className="accordion-collapse collapse my-5" data-bs-parent="#accordionExample">
+                                              <div id={`product-${record.product_id}`} className="accordion-collapse collapse my-3" data-bs-parent="#accordionExample">
                                                 <div className="row">
                                                     <div className="col-sm-4">
                                                         <div className="accordion-body ms-5">
                                                             <img src={Image} height={200}></img>
-                                                            <div className="justify-content-center">
-                                                                <button type="button" className="btn btn-primary me-2"><i className="bi bi-pencil-square fs-6"></i> Edit</button>
-                                                                <button type="button" className="btn btn-danger"><i className="bi bi-trash3 fs-6"></i> Delete</button>
+                                                            <div className="justify-content-center my-3">
+                                                                <button type="button" className="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target={`#edit-${record.product_id}`}
+                                                                    onClick={
+                                                                        () => {
+                                                                            setProductId(record.product_id);
+                                                                            setProductName(record.product_name);
+                                                                            setProductDesc(record.product_desc);
+                                                                            setProductQty(record.product_qty.toString());
+                                                                            setProductUpc(record.product_upc.toString());
+                                                                            setProductCategory(record.category_id.toString());
+                                                                            setLowStockAlert(record.low_stock_alert.toString());
+                                                                        }
+                                                                    }>
+                                                                    <i className="bi bi-pencil-square fs-6"></i> Edit
+                                                                    </button>
+                                                                <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={`#delete-${record.product_id}`}><i className="bi bi-trash3 fs-6"></i> Delete</button>
                                                                 <button type="button" className="btn btn-success"><i className="bi bi-cart fs-6"></i> Add to Shopping List</button>
                                                             </div>
 
                                                         </div>
                                                     </div>
-                                                    <div className="col-sm-6">
+                                                    <div className="col-sm-6 my-3">
                                                         <div className="list-inline">
                                                             <h5 className="text-primary list-inline-item">Product Name:</h5>
                                                             <p className="list-inline-item">{record.product_name}</p>
+                                                        </div>
+                                                        <div className="list-inline">
+                                                            <h5 className="text-primary list-inline-item">Product Category:</h5>
+                                                            <p className="list-inline-item">{record.category_name} ({record.category_id})</p>
                                                         </div>
                                                         <div className="list-inline">
                                                             <h5 className="text-primary list-inline-item">Product Description:</h5>
@@ -303,7 +469,7 @@ const Products = () => {
                                                         </div>
                                                         <div className="list-inline">
                                                             <h5 className="text-primary list-inline-item">On Hand:</h5>
-                                                            <p className="list-inline-item">{record.product_qty}</p>
+                                                            <p className={`${record.product_qty > record.low_stock_alert ? "text-success" : "text-danger"} ${"list-inline-item"} ${"bold"}`}>{record.product_qty}</p>
                                                         </div>
                                                         <div className="list-inline">
                                                             <h5 className="text-primary list-inline-item">Product UPC:</h5>
@@ -313,6 +479,86 @@ const Products = () => {
                                                             <h5 className="text-primary list-inline-item">Low Stock Alert:</h5>
                                                             <p className="list-inline-item">{record.low_stock_alert}</p>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                            { /* Edit Product Modal */ }
+                                            <div className="modal fade" id={`edit-${record.product_id}`} tabIndex={-1} aria-labelledby={`edit-${record.product_id}`} aria-hidden="true">
+                                              <div className="modal-dialog">
+                                                <div className="modal-content">
+                                                  <div className="modal-header">
+                                                    <h1 className="modal-title fs-5" id="exampleModalLabel">Edit Product | {record.product_name} ({record.product_id})</h1>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div className="modal-body">
+                                                  <form className="row g-3" onSubmit={editProduct}>
+                                                    <div className="col-12">
+                                                      <label className="form-label">Product Name</label>
+                                                      <input type="text" className="form-control" id="productName" placeholder="Cookies" value={productName} onChange={(e) => setProductName(e.target.value)}/>
+                                                    </div>
+                                                    <div className="col-md-12">
+                                                      <label htmlFor="productDescription" className="form-label">Product Description</label>
+                                                      <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} value={productDesc} onChange={(e) => setProductDesc(e.target.value)}></textarea>
+                                                    </div>
+                                                    <div className="col-6">
+                                                      <label className="form-label">Product Quantity</label>
+                                                      <input type="text" className="form-control" id="productQty" placeholder="" value={productQty} onChange={(e) => setProductQty(e.target.value)}/>
+                                                    </div>
+                                                    <div className="col-6">
+                                                      <label className="form-label">Product UPC</label>
+                                                      <input type="text" className="form-control" id="productUpc" placeholder="" value={productUpc} onChange={(e) => setProductUpc(e.target.value)}/>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                      <label htmlFor="inputState" className="form-label">Category</label>
+                                                      <Select options={categoryOptions} placeholder={record.category_name} onChange={productCatDropdownChange}/>
+                                                    </div>
+                                                    <div className="col-6">
+                                                      <label className="form-label">Low Stock Alert 
+                                                      <a className="ms-2" ref={lowStockAlertTooltip} onClick={(e: any) => setLowStockAlert(e.target.value)}>
+                                                        <i className="bi bi-question-circle"></i>
+                                                      </a>
+                                                      <Overlay target={lowStockAlertTooltip.current} show={show} placement="right">
+                                                        {(props) => (
+                                                          <Tooltip id="overlay-example" {...props}>
+                                                            Low Stock Alert notifies when a product is less than the quantity,
+                                                            meaning that have low stock of that specific product. Type a 
+                                                            numeric value to be notified when the product is in low stock.
+                                                          </Tooltip>
+                                                        )}
+                                                      </Overlay>
+                                                      </label>
+                                                      <input type="text" className="form-control" id="lowStockAlert" placeholder="" value={lowStockAlert} onChange={(e) => setLowStockAlert(e.target.value)}/>
+                                                    </div>
+                                                    <div className="col-md-12">
+                                                      <label htmlFor="inputState" className="form-label">Product Image</label>
+                                                      <input type="file" className="form-control" id="inputGroupFile02" />
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                      <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Save Changes</button>
+                                                    </div>
+                                                  </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                            { /* Delete Product Modal */ }
+                                            <div className="modal fade" id={`delete-${record.product_id}`} tabIndex={-1} aria-labelledby={`delete-${record.product_id}`} aria-hidden="true">
+                                              <div className="modal-dialog">
+                                                <div className="modal-content">
+                                                  <div className="modal-header">
+                                                    <h1 className="modal-title fs-5" id="exampleModalLabel">Delete Product | {record.product_name} ({record.product_id})</h1>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div className="modal-body">
+                                                    <p>Are you sure you want to delete <b>{record.product_name} ({record.product_id})</b>? THIS ACTION CANNOT BE UNDONE!</p>
+                                                  </div>
+                                                  <div className="modal-footer">
+                                                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                      <button type="submit" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteProduct(record.product_id)}>Delete Product</button>
                                                     </div>
                                                 </div>
                                               </div>
@@ -344,27 +590,47 @@ const Products = () => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div className="modal-body">
-                      <form className="row g-3">
+                      <form className="row g-3" onSubmit={addProduct}>
                         <div className="col-12">
                           <label className="form-label">Product Name</label>
-                          <input type="text" className="form-control" id="productName" placeholder="Cookies"/>
+                          <input type="text" className="form-control" id="productName" placeholder="Cookies" value={productName} onChange={(e) => setProductName(e.target.value)}/>
                         </div>
                         <div className="col-md-12">
                           <label htmlFor="productDescription" className="form-label">Product Description</label>
-                          <textarea className="form-control" id="exampleFormControlTextarea1" rows={3}></textarea>
+                          <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} value={productDesc} onChange={(e) => setProductDesc(e.target.value)}></textarea>
                         </div>
                         <div className="col-6">
                           <label className="form-label">Product Quantity</label>
-                          <input type="text" className="form-control" id="productQty" placeholder=""/>
+                          <input type="text" className="form-control" id="productQty" placeholder="" value={productQty} onChange={(e) => setProductQty(e.target.value)}/>
                         </div>
                         <div className="col-6">
                           <label className="form-label">Product UPC</label>
-                          <input type="text" className="form-control" id="productUpc" placeholder=""/>
+                          <input type="text" className="form-control" id="productUpc" placeholder="" value={productUpc} onChange={(e) => setProductUpc(e.target.value)}/>
+                        </div>
+                        <div className="col-md-6">
+                          <label htmlFor="inputState" className="form-label">Category</label>
+                          <Select options={categoryOptions} onChange={productCatDropdownChange}/>
+                        </div>
+                        <div className="col-6">
+                          <label className="form-label">Low Stock Alert 
+                          <a className="ms-2" ref={lowStockAlertTooltip} onClick={(e: any) => setLowStockAlert(e.target.value)}>
+                            <i className="bi bi-question-circle"></i>
+                          </a>
+                          <Overlay target={lowStockAlertTooltip.current} show={show} placement="right">
+                            {(props) => (
+                              <Tooltip id="overlay-example" {...props}>
+                                Low Stock Alert notifies when a product is less than the quantity,
+                                meaning that have low stock of that specific product. Type a 
+                                numeric value to be notified when the product is in low stock.
+                              </Tooltip>
+                            )}
+                          </Overlay>
+                          </label>
+                          <input type="text" className="form-control" id="lowStockAlert" placeholder="" value={lowStockAlert} onChange={(e) => setLowStockAlert(e.target.value)}/>
                         </div>
                         <div className="col-md-12">
-                          <label htmlFor="inputState" className="form-label">Category | <a href="/dashboard/categories">
-                            Can't find it? Create new category!</a></label>
-                          <Select options={categoryOptions}/>
+                          <label htmlFor="inputState" className="form-label">Product Image</label>
+                          <input type="file" className="form-control" id="inputGroupFile02" />
                         </div>
                         <div className="modal-footer">
                           <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

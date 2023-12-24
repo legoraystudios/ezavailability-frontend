@@ -10,6 +10,10 @@ body {
     background-color: #f8f9fa !important;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 footer {
     position: absolute;
     bottom: 0;

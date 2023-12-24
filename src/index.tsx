@@ -7,7 +7,9 @@ import Admin from './Routes/Admin/Admin';
 import AdminAccounts from './Routes/Admin/Accounts';
 import AdminScans from './Routes/Admin/Scans';
 import Products from './Routes/Products/Products';
+import Categories from './Routes/Products/Categories';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +23,7 @@ root.render(
       <Route path="/dashboard/admin/accounts" element={<AdminAccounts />} />
       <Route path="/dashboard/admin/scans" element={<AdminScans />} />
       <Route path="/dashboard/products" element={<Products />} />
+      <Route path="/dashboard/categories" element={<Categories />} />
     </Routes>
   </BrowserRouter>
 

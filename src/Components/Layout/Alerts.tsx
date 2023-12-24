@@ -128,6 +128,78 @@ function Alerts() {
                 </div>
             </div>
         )
+    } else if(queryParams.has("addproducterr01")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Product Name already exist in our records.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("addproducterr02")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Category ID doesn't exist in our records.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("addproducterr03")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Product UPC already exist in our records.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("addproducterror")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Something went wrong while adding the product on the inventory. Please check your information and try again.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("editproducterror")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Something went wrong while editing the product on the inventory. Please check your information and try again.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("productadded")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Product added successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("productedited")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Product edited successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("productdeleted")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Product edited successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
     } else {
         return(
         <div></div>

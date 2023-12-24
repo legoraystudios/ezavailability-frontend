@@ -134,7 +134,7 @@ const Accounts = () => {
             } else {
               setTotalItems(0)
             }
-            
+
             setIsLoaded(true);
         })
 
@@ -367,14 +367,14 @@ const Accounts = () => {
 
                 <div className="mx-2 my-2">
                     <form className="d-inline-flex float-start" role="search" onSubmit={searchQuery}>
-                      <select id="inputState" className="form-select w-25" value={searchType} onChange={(e: any) => setSearchType(e.target.value)}>
+                      <select id="inputState" className="form-select w-50" value={searchType} onChange={(e: any) => setSearchType(e.target.value)}>
                           <option value="0">Search By...</option>
                           <option value="id" >ID</option>
                           <option value="firstName">First Name</option>
                           <option value="lastName">Last Name</option>
                           <option value="email">Email</option>
                       </select>
-                      <input className="form-control me-2 w-50" type="search" placeholder="Search" aria-label="Search"
+                      <input className="form-control me-2 w-75" type="search" placeholder="Search" aria-label="Search"
                       value={searchValue} onChange={(e: any) => setSearchValue(e.target.value)}/>
                       <button className="btn btn-primary" type="submit">Search</button>
                     </form>
