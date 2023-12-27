@@ -266,10 +266,7 @@ const Accounts = () => {
 
         try {
         
-            if (!searchValue) {
-              navigate(`/dashboard/admin/accounts`)
-              window.location.reload();
-            } else if (searchType === "id") {
+            if (searchType === "id") {
               navigate(`/dashboard/admin/accounts?id=${searchValue}`)
               window.location.reload();
             } else if (searchType === "firstName") {
@@ -280,6 +277,9 @@ const Accounts = () => {
               window.location.reload();
             } else if (searchType === "email") {
               navigate(`/dashboard/admin/accounts?email=${searchValue}`)
+              window.location.reload();
+            } else {
+              navigate(`/dashboard/admin/accounts`)
               window.location.reload();
             }
     

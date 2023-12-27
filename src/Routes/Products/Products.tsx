@@ -5,8 +5,8 @@ import Image from "../../Images/image.jpg";
 import Alerts from "../../Components/Layout/Alerts";
 import Navbar2 from "../../Components/Layout/Navbar2";
 import Footer from "../../Components/Layout/Footer";
-import Overlay from "react-bootstrap/esm/Overlay";
-import Tooltip from "react-bootstrap/esm/Tooltip";
+import Tooltip from "react-bootstrap/Tooltip";
+import Overlay from "react-bootstrap/Overlay";
 
 interface UserProperties {
     id: number,
@@ -18,11 +18,6 @@ interface CategoryProperties {
     category_name: string,
     category_desc: string,
     low_stock_alert: number
-}
-
-interface CategoryOptions {
-    value: string;
-    label: string;
 }
 
 interface ProductProperties {
@@ -50,7 +45,7 @@ const Products = () => {
     const [limitPerPage, setLimitPerPage] = useState(5);
     const [totalItems, setTotalItems] = useState(0);
 
-    // Variables for createProduct()
+    // Variables for addProduct() and editProduct()
     const [productId, setProductId] = useState(0);
     const [productName, setProductName] = useState("");
     const [productDesc, setProductDesc] = useState("");
@@ -176,10 +171,7 @@ const Products = () => {
 
         try {
         
-            if (!searchValue) {
-              navigate(`/dashboard/products`)
-              window.location.reload();
-            } else if (searchType === "productName") {
+            if (searchType === "productName") {
               navigate(`/dashboard/products?productName=${searchValue}`)
               window.location.reload();
             } else if (searchType === "productId") {
@@ -187,6 +179,9 @@ const Products = () => {
               window.location.reload();
             } else if (searchType === "productUpc") {
               navigate(`/dashboard/products?productUpc=${searchValue}`)
+              window.location.reload();
+            } else {
+              navigate(`/dashboard/products`)
               window.location.reload();
             }
     
@@ -302,8 +297,6 @@ const Products = () => {
               })
 
               .then(async response => {
-
-                const res = await response.json()
                 
                 if (response.status === 200) {
                   navigate("/dashboard/products?productdeleted")
@@ -366,6 +359,10 @@ const Products = () => {
         pageDotDecrement = <li className="page-item"><button className="page-link" disabled={page === 1} onClick={prevPage}>&hellip;</button></li>;
       }
 
+      const productCatDropdownChange = (selectedOption: any) => {
+        setProductCategory(selectedOption.value)
+      }
+
     useEffect(() => {
         document.title = "My Inventory | EZAvailability";
         fetchData();
@@ -373,10 +370,6 @@ const Products = () => {
         getProducts();
         // eslint-disable-next-line
     }, [page, limitPerPage])
-
-    const productCatDropdownChange = (selectedOption: any) => {
-        setProductCategory(selectedOption.value)
-    }
 
     return (
         <div>
@@ -516,7 +509,7 @@ const Products = () => {
                                                     </div>
                                                     <div className="col-6">
                                                       <label className="form-label">Low Stock Alert 
-                                                      <a className="ms-2" ref={lowStockAlertTooltip} onClick={(e: any) => setLowStockAlert(e.target.value)}>
+                                                      <a className="ms-2" ref={lowStockAlertTooltip} onClick={() => setShow(!show)}>
                                                         <i className="bi bi-question-circle"></i>
                                                       </a>
                                                       <Overlay target={lowStockAlertTooltip.current} show={show} placement="right">

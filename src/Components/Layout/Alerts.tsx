@@ -195,7 +195,52 @@ function Alerts() {
         return(
             <div>
                 <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    <p>System | Product edited successfully.</p>
+                    <p>System | Product deleted successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("categoryadded")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Category added successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("categoryedited")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Category edited successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("addcategoryerr01")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Category already exist in our records.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("addcategoryerror")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Something went wrong while adding the category on the system. Please check your information and try again.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("categorydeleted")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Category deleted successfully.</p>
                     <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
