@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSearchParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -6,7 +7,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function Alerts() {
   
-    const queryParams = new URLSearchParams(window.location.search)
+    const queryParams = new URLSearchParams(window.location.search);
+    const [searchUrlParams, setSearchUrlParams] = useSearchParams();
 
     if(queryParams.has("signout")) {
         return(
@@ -155,6 +157,24 @@ function Alerts() {
                 </div>
             </div>
         )
+    } else if(queryParams.has("addproducterr04")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Product not found in our records.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("addproducterr05")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Desired quantity exceeds the quantity on inventory.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
     } else if(queryParams.has("addproducterror")) {
         return(
             <div>
@@ -241,6 +261,24 @@ function Alerts() {
             <div>
                 <div className="alert alert-success alert-dismissible fade show" role="alert">
                     <p>System | Category deleted successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("scannedin")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Added <b>+{searchUrlParams.get("scannedin")}</b> items to the inventory.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("scannedout")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Removed <b>-{searchUrlParams.get("scannedout")}</b> items to the inventory.</p>
                     <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>

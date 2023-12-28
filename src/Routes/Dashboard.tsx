@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Navbar2 from '../Components/Layout/Navbar2'
 import Footer from '../Components/Layout/Footer'
@@ -14,12 +14,14 @@ import '../Styles/main.css'
   }
 
 
-function Dashboard() {
+const Dashboard = () => {
 
+  // Variables for scanIn() and scanOut()
+  const [productUpc, setProductUpc] = useState("");
+  const [productQty, setProductQty] = useState("1");
+  
   const [user, setUser] = useState<UserProperties[]>([])
   const navigate = useNavigate()
-
-  try {
 
     const fetchData = () => {
 
@@ -42,20 +44,92 @@ function Dashboard() {
         .then(data => {
           setUser(data)
         })
-        
-      }
+
+    }
+
+    const scanIn = async (event: any) => {
+
+      event.preventDefault();
+
+      const payload = {productUpc: productUpc, productQty: productQty};
+
+      fetch(`${process.env.REACT_APP_BACKEND_HOST}/scans/in` , {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+
+        .then(async response => {
+
+          const res = await response.json() as {
+            errors: {
+              errCode: string,
+            }
+          };
+
+          if (response.status === 200) {
+            navigate(`/dashboard/?scannedin=${productQty}`);
+          } else if (res.errors.errCode === "Prod04") {
+            navigate("/dashboard/?addproducterr04");
+          } else if (res.errors.errCode === "Prod05") {
+            navigate("/dashboard/?addproducterr05");
+          } else {
+            navigate("/dashboard/?addproducterror");
+          }
+
+        })
+
+
+
+    }
+
+    const scanOut = async (event: any) => {
+
+      event.preventDefault();
+
+      const payload = {productUpc: productUpc, productQty: productQty};
+
+      fetch(`${process.env.REACT_APP_BACKEND_HOST}/scans/out` , {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+
+        .then(async response => {
+
+          const res = await response.json() as {
+            errors: {
+              errCode: string,
+            }
+          };
+
+          if (response.status === 200) {
+            navigate(`/dashboard/?scannedout=${productQty}`);
+          } else if (res.errors.errCode === "Prod04") {
+            navigate("/dashboard/?addproducterr04");
+          } else if (res.errors.errCode === "Prod05") {
+            navigate("/dashboard/?addproducterr05");
+          } else {
+            navigate("/dashboard/?addproducterror");
+          }
+
+        })
+      
+    }
 
     useEffect(() => {
       document.title = "Dashboard | EZAvailability";
       fetchData();
       // eslint-disable-next-line
     }, []);
-    
-  } catch (err) {
-    console.log(err)
-  }
   
-    
+
   return (
     <div>
         <body>
@@ -104,14 +178,15 @@ function Dashboard() {
                     <h1 className="modal-title fs-5" id="exampleModalLabel">Scan IN</h1>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                    <form>
+                    <form onSubmit={scanIn}>
                       <div className="modal-body text-center">
                         <h4>Scan IN Items</h4>
                         <p>Scan or enter UPC to add items:</p>
                         <div className="list-inline d-flex justify-content-center my-3">
                           <span className="input-group-text"><i className="bi bi-upc-scan"></i></span>
-                          <input className="form-control me-2 w-50" type="search" placeholder="Enter or Scan UPC" aria-label="UPCScan"/>
-                          <button className="btn btn-success" type="submit"><i className="bi bi-plus"></i> Scan IN</button>
+                          <input className="form-control w-auto" type="text" placeholder="Enter or Scan UPC" aria-label="UPCScan" value={productUpc} onChange={(e) => setProductUpc(e.target.value)}/>
+                          <input className="form-control w-25" type="number" placeholder="Qty" aria-label="Qty" value={productQty} onChange={(e) => setProductQty(e.target.value)}/>
+                          <button className="btn btn-success ms-1" type="submit" data-bs-dismiss="modal"><i className="bi bi-plus"></i> Scan IN</button>
                         </div>
                       </div>
                       <div className="modal-footer justify-content-center">
@@ -130,14 +205,15 @@ function Dashboard() {
                     <h1 className="modal-title fs-5" id="exampleModalLabel">Scan OUT</h1>
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <form>
+                  <form onSubmit={scanOut}>
                       <div className="modal-body text-center">
                         <h4>Scan OUT Items</h4>
                         <p>Scan or enter UPC to remove items:</p>
                         <div className="list-inline d-flex justify-content-center my-3">
                           <span className="input-group-text"><i className="bi bi-upc-scan"></i></span>
-                          <input className="form-control me-2 w-50" type="search" placeholder="Enter or Scan UPC" aria-label="UPCScan"/>
-                          <button className="btn btn-danger" type="submit"><i className="bi bi-dash"></i> Scan OUT</button>
+                          <input className="form-control w-auto" type="text" placeholder="Enter or Scan UPC" aria-label="UPCScan" value={productUpc} onChange={(e) => setProductUpc(e.target.value)}/>
+                          <input className="form-control w-25" type="number" placeholder="Qty" aria-label="Qty" value={productQty} onChange={(e) => setProductQty(e.target.value)}/>
+                          <button className="btn btn-danger ms-1" type="submit" data-bs-dismiss="modal"><i className="bi bi-dash"></i> Scan OUT</button>
                         </div>
                       </div>
                       <div className="modal-footer justify-content-center">
