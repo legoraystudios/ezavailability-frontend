@@ -112,6 +112,8 @@ const Products = () => {
             requestPath = `/products?limitPerPage=${limitPerPage}&page=${page}&productId=${searchUrlParams.get("productId")}`;
         } else if (searchUrlParams.get("productUpc") !== null) {
             requestPath = `/products?limitPerPage=${limitPerPage}&page=${page}&productUpc=${searchUrlParams.get("productUpc")}`;
+        } else if (searchUrlParams.get("categoryId") !== null) {
+            requestPath = `/products?limitPerPage=${limitPerPage}&page=${page}&categoryId=${searchUrlParams.get("categoryId")}`;
         } else {
             requestPath = `/products?limitPerPage=${limitPerPage}&page=${page}`;
         }
@@ -180,6 +182,9 @@ const Products = () => {
             } else if (searchType === "productUpc") {
               navigate(`/dashboard/products?productUpc=${searchValue}`)
               window.location.reload();
+            } else if (searchType === "categoryId") {
+              navigate(`/dashboard/products?categoryId=${searchValue}`)
+              window.location.reload();
             } else {
               navigate(`/dashboard/products`)
               window.location.reload();
@@ -189,6 +194,22 @@ const Products = () => {
             console.log(err);
           }
           
+    }
+
+    const renderSearchBar = () => {
+      if(searchType === "categoryId") {
+        return (
+          <>
+            <Select className="w-75" options={categoryOptions} onChange={productCatOnSearchBar}/>
+          </>
+        )
+      } else {
+        return (
+          <>
+            <input className="form-control w-75" type="search" placeholder="Search" aria-label="Search" value={searchValue} onChange={(e:any) => setSearchValue(e.target.value)}/>
+          </>
+        )
+      }
     }
 
     const addProduct = async (event: any) => {
@@ -359,6 +380,10 @@ const Products = () => {
         pageDotDecrement = <li className="page-item"><button className="page-link" disabled={page === 1} onClick={prevPage}>&hellip;</button></li>;
       }
 
+      const productCatOnSearchBar = (selectedOption: any) => {
+        setSearchValue(selectedOption.value)
+      }
+
       const productCatDropdownChange = (selectedOption: any) => {
         setProductCategory(selectedOption.value)
       }
@@ -377,7 +402,7 @@ const Products = () => {
             <body>
                 <div className="container mt-5 pb-5">
                   <Alerts />
-                    <a href="/dashboard"><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
+                    <a href={`${process.env.REACT_APP_BASENAME}/dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
                     <h3>My Inventory</h3>
 
                     <ul className="nav nav-tabs bg-white mb-3">
@@ -393,12 +418,15 @@ const Products = () => {
                     <form className="d-inline-flex float-start" role="search" onSubmit={searchQuery}>
                       <select id="inputState" className="form-select w-50" value={searchType} onChange={(e: any) => setSearchType(e.target.value)}>
                           <option value="0">Search By...</option>
-                          <option value="productName" >Product Name</option>
+                          <option value="productName">Product Name</option>
                           <option value="productId">Product ID</option>
                           <option value="productUpc">Product UPC</option>
+                          <option value="categoryId">Category Name</option>
                       </select>
-                      <input className="form-control me-2 w-75" type="search" placeholder="Search" aria-label="Search" value={searchValue} onChange={(e:any) => setSearchValue(e.target.value)}/>
-                      <button className="btn btn-primary" type="submit">Search</button>
+                      {
+                        renderSearchBar()
+                      }
+                      <button className="btn btn-primary ms-2" type="submit">Search</button>
                     </form>
 
                     <button type="button" className="btn btn-success float-md-end" data-bs-toggle="modal" data-bs-target="#addProduct"><i className="bi bi-file-earmark-plus fs-6"></i> Add Product</button>

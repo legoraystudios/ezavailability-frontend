@@ -213,7 +213,7 @@ const Accounts = () => {
   
       }
   
-      const editAccount = async (event: any) => {
+      const editPersonalAccount = async (event: any) => {
   
         event.preventDefault();
   
@@ -258,6 +258,31 @@ const Accounts = () => {
           console.log(err)
         }
   
+      }
+
+      const requestPasswordReset = async (email: any) => {
+
+        const payload = { email: email };
+
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/auth/forgotpasswd`, {
+              method: "POST",
+              credentials: 'include',
+              headers: {
+              'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            })
+            
+            if (response.status === 200) {
+              navigate('/dashboard/admin/accounts?forgotpasswdsuccess');
+            } else {
+              navigate('/dashboard/admin/accounts?emailnotfound');
+            }
+          } catch (err) {
+            console.log(err)
+          }
+
       }
 
     const searchQuery = async (event: any) => {
@@ -350,17 +375,17 @@ const Accounts = () => {
             <Navbar2 />
                 <div className="container mt-5">
                   <Alerts />
-                    <a href="/dashboard"><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
+                    <a href={`${process.env.REACT_APP_BASENAME}/dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
                     <h3>Admin Dashboard</h3>
                 </div>
 
             <div className="container mt-5">
                 <ul className="nav nav-tabs bg-white">
                     <li className="nav-item">
-                      <a className="nav-link active" aria-current="page" href="accounts">Accounts</a>
+                      <a className="nav-link active" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/dashboard/admin/accounts`}>Accounts</a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link" href="scans">Scan History</a>
+                      <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard/admin/scans`}>Scan History</a>
                     </li>
                 </ul>
 
@@ -423,7 +448,7 @@ const Accounts = () => {
                                                     data-bs-target={`#delAcct-${record.id}`} disabled={record.id === loggedUser[0] || record.role_id === 2}>
                                                       <i className="bi bi-trash3 fs-6"></i>
                                                   </button>
-                                                  <button type="button" className="btn btn-warning">
+                                                  <button type="button" className="btn btn-warning" onClick={(e) => requestPasswordReset(record.email)}>
                                                     <i className="bi bi-key-fill fs-6"></i>
                                                   </button>
                                                 </td>
@@ -439,7 +464,7 @@ const Accounts = () => {
                                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div className="modal-body">
-                                                  <form className="row g-3" onSubmit={editAccount}>
+                                                  <form className="row g-3" onSubmit={editPersonalAccount}>
                                                     <div className="col-md-12">
                                                       <input type="text" style={{display: 'none'}} className="form-control" id="id" value={id} onChange={() => setId(record.id)} placeholder=""/>
                                                     </div>

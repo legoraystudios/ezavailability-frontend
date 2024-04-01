@@ -60,11 +60,14 @@ function Login() {
                 <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                 <input type="password" className="form-control" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
+              <div className="mb-3 float-end">
+                <a href="forgot-password">Trouble Signing In?</a>
+              </div>
               <div className="mb-3 form-check">
                 <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                 <label className="form-check-label" htmlFor="exampleCheck1">Remember Me</label>
               </div>
-                <button type="submit" className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary">Sign In</button>
             </form>
 
             <Footer />

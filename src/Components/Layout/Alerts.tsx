@@ -283,6 +283,33 @@ function Alerts() {
                 </div>
             </div>
         )
+    } else if(queryParams.has("forgotpasswdsuccess")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | A password reset link was sent to your email.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("emailnotfound")) {
+        return(
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <p>System | Email Address not found in our records.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("passwordchanged")) {
+        return(
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>System | Password changed successfully.</p>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
     } else {
         return(
         <div></div>
