@@ -58,7 +58,7 @@ function ForgotPassword() {
 
                     <div className="mt-3">
                         <div className="mb-3 float-end">
-                            <a className="d-flex" href="/"><i className="bi bi-arrow-left-circle me-1"></i> Go back to Sign In</a>
+                            <a className="d-flex" href={`${process.env.REACT_APP_BASENAME}`}><i className="bi bi-arrow-left-circle me-1"></i> Go back to Sign In</a>
                         </div>
                         <button type="submit" className="btn btn-primary">Reset Password</button>
                     </div>

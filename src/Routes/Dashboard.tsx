@@ -160,7 +160,7 @@ const Dashboard = () => {
                     <h3><i className="bi bi-upc-scan"></i> Scan Out</h3>
                     <p className="card-text">Remove existing items to inventory.</p>
                   </a>
-                  <a href={`${process.env.REACT_APP_BASENAME}/dashboard/products`} className="card-body border border-secondary-subtle">
+                  <a href={`/dashboard/products`} className="card-body border border-secondary-subtle">
                     <h3><i className="bi bi-search"></i> Manage Inventory</h3>
                     <p className="card-text">Lookup item/Add new item to inventory.</p>
                   </a>
@@ -195,7 +195,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="modal-footer justify-content-center">
-                        <a href={`${process.env.REACT_APP_BASENAME}/dashboard/products`}><i className="bi bi-search"></i> Advanced Search</a>
+                        <a href={`${process.env.REACT_APP_BASENAME}dashboard/products`}><i className="bi bi-search"></i> Advanced Search</a>
                       </div>
                     </form>
                 </div>
@@ -222,7 +222,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="modal-footer justify-content-center">
-                        <a href={`${process.env.REACT_APP_BASENAME}/dashboard/products`}><i className="bi bi-search"></i> Advanced Search</a>
+                        <a href={`${process.env.REACT_APP_BASENAME}dashboard/products`}><i className="bi bi-search"></i> Advanced Search</a>
                       </div>
                     </form>
                 </div>

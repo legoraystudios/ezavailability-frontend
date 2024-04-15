@@ -375,17 +375,17 @@ const Accounts = () => {
             <Navbar2 />
                 <div className="container mt-5">
                   <Alerts />
-                    <a href={`${process.env.REACT_APP_BASENAME}/dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
+                    <a href={`${process.env.REACT_APP_BASENAME}dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
                     <h3>Admin Dashboard</h3>
                 </div>
 
             <div className="container mt-5">
                 <ul className="nav nav-tabs bg-white">
                     <li className="nav-item">
-                      <a className="nav-link active" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/dashboard/admin/accounts`}>Accounts</a>
+                      <a className="nav-link active" aria-current="page" href={`${process.env.REACT_APP_BASENAME}dashboard/admin/accounts`}>Accounts</a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard/admin/scans`}>Scan History</a>
+                      <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}dashboard/admin/scans`}>Scan History</a>
                     </li>
                 </ul>
 

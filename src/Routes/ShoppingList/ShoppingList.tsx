@@ -14,7 +14,7 @@ const ShoppingList = () => {
             <Navbar2 />
 
             <div className="container mt-5">
-                <a href="/dashboard"><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
+                <a href={`${process.env.REACT_APP_BASENAME}dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
                 <h3>Shopping List</h3>
                     <div className="row">
                         <div className="col mt-3">

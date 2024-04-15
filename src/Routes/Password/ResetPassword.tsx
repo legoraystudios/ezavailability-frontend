@@ -99,7 +99,7 @@ function ResetPassword() {
                                             <div className="alert alert-danger alert-dismissible fade show" role="alert">
                                                 System | The token you provide is invalid or has expired.
                                             </div>
-                                            <a className="d-flex justify-content-center" href="/"><i className="bi bi-arrow-left-circle me-1"></i> Go back to Sign In</a>
+                                            <a className="d-flex justify-content-center" href="{`${process.env.REACT_APP_BASENAME}`}"><i className="bi bi-arrow-left-circle me-1"></i> Go back to Sign In</a>
                                         </form>
                                     </body>
                                 </div>

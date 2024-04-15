@@ -282,7 +282,7 @@ const Categories = () => {
             <body>
                 <div className="container mt-5 pb-5">
                   <Alerts />
-                    <a href={`${process.env.REACT_APP_BASENAME}/dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
+                    <a href={`${process.env.REACT_APP_BASENAME}dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
                     <h3>My Inventory</h3>
 
                     <ul className="nav nav-tabs bg-white mb-3">
@@ -361,7 +361,7 @@ const Categories = () => {
                                                                 <i className="bi bi-pencil-square fs-6"></i> Edit
                                                                 </button>
                                                             <button type="button" className="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target={`#delete-${record.category_id}`}><i className="bi bi-trash3 fs-6"></i> Delete</button>
-                                                            <a type="button" className="btn btn-info" href={`${process.env.REACT_APP_BASENAME}/dashboard/products?categoryId=${record.category_id}`}><i className="bi bi-box-arrow-up-right fs-6"></i> View Products Related</a>
+                                                            <a type="button" className="btn btn-info" href={`${process.env.REACT_APP_BASENAME}dashboard/products?categoryId=${record.category_id}`}><i className="bi bi-box-arrow-up-right fs-6"></i> View Products Related</a>
                                                         </div>
                                                     </div>
                                                 </div>

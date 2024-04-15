@@ -57,7 +57,7 @@ function Navbar2() {
 
     if (role > 0) {
       return(
-        <li><a className="dropdown-item text-danger" href={`${process.env.REACT_APP_BASENAME}/dashboard/admin`}><i className="bi bi-shield-lock"></i> Admin Dashboard</a></li>
+        <li><a className="dropdown-item text-danger" href={`${process.env.REACT_APP_BASENAME}dashboard/admin`}><i className="bi bi-shield-lock"></i> Admin Dashboard</a></li>
       )
     }
 

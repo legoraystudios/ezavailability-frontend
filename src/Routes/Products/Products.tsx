@@ -402,7 +402,7 @@ const Products = () => {
             <body>
                 <div className="container mt-5 pb-5">
                   <Alerts />
-                    <a href={`${process.env.REACT_APP_BASENAME}/dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
+                    <a href={`${process.env.REACT_APP_BASENAME}dashboard`}><i className="bi bi-arrow-90deg-up"></i> Dashboard</a>
                     <h3>My Inventory</h3>
 
                     <ul className="nav nav-tabs bg-white mb-3">
